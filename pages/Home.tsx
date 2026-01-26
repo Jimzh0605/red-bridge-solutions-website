@@ -9,6 +9,13 @@ const HeroSection: React.FC = () => {
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 px-4 sm:px-6 lg:px-8 pt-20">
           <main className="mt-10 mx-auto max-w-7xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
             <div className="sm:text-center lg:text-left">
+              {/* Brand Logo Image */}
+              <img 
+                src="/images/logos/rbs-logo.png" 
+                alt="Red Bridge Solutions" 
+                className="h-16 md:h-24 w-auto mb-6 object-contain sm:mx-auto lg:mx-0"
+              />
+              
               <h1 className="text-4xl tracking-tight font-serif text-charcoal sm:text-5xl md:text-6xl">
                 <span className="block font-bold">Bridging the Gap in</span>
                 <span className="block text-primary font-medium leading-tight">North American and<br className="hidden lg:block" /> Asian Manufacturing</span>
@@ -102,30 +109,38 @@ const ExperienceSection: React.FC = () => {
         
         {/* Logo Strip */}
         <div className="mt-12 pt-8 border-t border-gray-100">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4 items-center justify-items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="grid grid-cols-2 gap-12 md:gap-8 md:grid-cols-4 items-center justify-items-center">
              {/* University of Waterloo */}
-             <div className="flex justify-center w-full">
-               <span className="text-lg md:text-xl font-serif font-bold tracking-wide text-gray-800 text-center">
-                 UNIVERSITY OF<br/>WATERLOO
-               </span>
+             <div className="flex justify-center w-full px-4">
+               <img 
+                 src="/images/logos/uwaterloo.png" 
+                 alt="University of Waterloo" 
+                 className="h-12 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+               />
              </div>
              {/* Tesla */}
-             <div className="flex justify-center w-full">
-               <span className="text-2xl md:text-3xl font-sans font-bold tracking-[0.2em] text-gray-800">
-                 TESLA
-               </span>
+             <div className="flex justify-center w-full px-4">
+               <img 
+                 src="/images/logos/tesla.png" 
+                 alt="Tesla" 
+                 className="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+               />
              </div>
              {/* Apple */}
-             <div className="flex justify-center w-full">
-               <span className="text-2xl md:text-3xl font-sans font-medium text-gray-800">
-                 Apple
-               </span>
+             <div className="flex justify-center w-full px-4">
+               <img 
+                 src="/images/logos/apple.png" 
+                 alt="Apple" 
+                 className="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+               />
              </div>
              {/* Purolator */}
-             <div className="flex justify-center w-full">
-               <span className="text-2xl md:text-3xl font-sans font-extrabold italic text-gray-800 tracking-tighter">
-                 //Purolator
-               </span>
+             <div className="flex justify-center w-full px-4">
+               <img 
+                 src="/images/logos/purolator.png" 
+                 alt="Purolator" 
+                 className="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+               />
              </div>
           </div>
         </div>

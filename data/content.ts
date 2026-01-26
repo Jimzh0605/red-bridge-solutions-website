@@ -5,15 +5,15 @@ export const teamData: TeamMember[] = [
     name: "Jimmy Zhang",
     role: "Co-Founder",
     description: "Specializing in supply chain optimization and technical negotiation.",
-    // To add a photo: Place 'jimmy.jpg' in public/images/ and uncomment the line below:
-    // image: '/images/jimmy.jpg',
+    // To add a photo: Place 'jimmy.jpg' in 'public/images/team/' and uncomment the line below:
+    // image: '/images/team/jimmy.jpg',
   },
   {
     name: "Larry Wu",
     role: "Co-Founder",
     description: "Expertise in manufacturing engineering and quality assurance protocols.",
-    // To add a photo: Place 'larry.jpg' in public/images/ and uncomment the line below:
-    // image: '/images/larry.jpg',
+    // To add a photo: Place 'larry.jpg' in 'public/images/team/' and uncomment the line below:
+    // image: '/images/team/larry.jpg',
   }
 ];
 

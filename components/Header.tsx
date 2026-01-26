@@ -21,15 +21,17 @@ export const Header: React.FC = () => {
         <div className="flex justify-between items-center h-24">
           
           <div className="flex items-center">
-            {/* Logo */}
+            {/* Logo Image */}
             <div className="flex-shrink-0 flex items-center">
               <Link 
                 to="/" 
                 className="group"
               >
-                <span className="text-xl md:text-2xl font-serif font-bold text-primary tracking-tight group-hover:text-[#4a0012] transition-colors duration-200">
-                  Red Bridge Solutions
-                </span>
+                <img 
+                  src="/images/logos/rbs-logo.png" 
+                  alt="RBS Logo" 
+                  className="h-14 w-auto object-contain transition-opacity duration-200 hover:opacity-80"
+                />
               </Link>
             </div>
           </div>
