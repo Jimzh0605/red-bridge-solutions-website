@@ -10,6 +10,7 @@ export const Header: React.FC = () => {
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
     { name: 'FAQ', path: '/faq' },
     { name: 'Client Portal', path: '/portal' },
   ];
@@ -17,27 +18,35 @@ export const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-2xl font-serif font-bold text-burgundy tracking-tight">
-              Red Bridge Solutions
-            </Link>
+        <div className="flex justify-between items-center h-24">
+          
+          <div className="flex items-center">
+            {/* Logo */}
+            <div className="flex-shrink-0 flex items-center">
+              <Link 
+                to="/" 
+                className="group"
+              >
+                <span className="text-xl md:text-2xl font-serif font-bold text-primary tracking-tight group-hover:text-[#4a0012] transition-colors duration-200">
+                  Red Bridge Solutions
+                </span>
+              </Link>
+            </div>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium tracking-wide transition-colors duration-200 ${
+                className={`text-sm font-bold tracking-widest uppercase transition-colors duration-200 flex items-center font-sans ${
                   isActive(link.path)
-                    ? 'text-burgundy border-b-2 border-burgundy'
-                    : 'text-gray-500 hover:text-burgundy'
+                    ? 'text-primary'
+                    : 'text-gray-500 hover:text-primary'
                 }`}
               >
-                {link.name.toUpperCase()}
+                {link.name}
               </Link>
             ))}
           </nav>
@@ -46,7 +55,7 @@ export const Header: React.FC = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-500 hover:text-burgundy focus:outline-none"
+              className="text-gray-500 hover:text-primary focus:outline-none"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -63,10 +72,10 @@ export const Header: React.FC = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`block px-3 py-2 text-base font-medium ${
+                className={`block px-3 py-2 text-base font-medium font-sans ${
                   isActive(link.path)
-                    ? 'text-burgundy bg-gray-50'
-                    : 'text-gray-600 hover:text-burgundy hover:bg-gray-50'
+                    ? 'text-primary bg-gray-50'
+                    : 'text-gray-600 hover:text-primary hover:bg-gray-50'
                 }`}
               >
                 {link.name}

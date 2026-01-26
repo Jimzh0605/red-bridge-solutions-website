@@ -9,10 +9,10 @@ const AccordionItem: React.FC<{ item: FaqItem; isOpen: boolean; toggle: () => vo
         className="w-full py-6 text-left focus:outline-none group flex justify-between items-center"
         onClick={toggle}
       >
-        <span className={`text-lg font-medium font-serif transition-colors duration-200 ${isOpen ? 'text-burgundy' : 'text-gray-900 group-hover:text-burgundy'}`}>
+        <span className={`text-lg font-medium font-serif transition-colors duration-200 ${isOpen ? 'text-primary' : 'text-gray-900 group-hover:text-primary'}`}>
           {item.question}
         </span>
-        <span className="ml-6 flex-shrink-0 text-gray-400 group-hover:text-burgundy">
+        <span className="ml-6 flex-shrink-0 text-gray-400 group-hover:text-primary">
           {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </span>
       </button>
