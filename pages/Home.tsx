@@ -9,12 +9,10 @@ const HeroSection: React.FC = () => {
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 px-4 sm:px-6 lg:px-8 pt-20">
           <main className="mt-10 mx-auto max-w-7xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
             <div className="sm:text-center lg:text-left">
-              {/* Brand Logo Image */}
-              <img 
-                src="/images/logos/rbs-logo.png" 
-                alt="Red Bridge Solutions" 
-                className="h-16 md:h-24 w-auto mb-6 object-contain sm:mx-auto lg:mx-0"
-              />
+              {/* Brand Text Replacement */}
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-2 sm:mb-4 tracking-tight leading-none">
+                Red Bridge Solutions
+              </h2>
               
               <h1 className="text-4xl tracking-tight font-serif text-charcoal sm:text-5xl md:text-6xl">
                 <span className="block font-bold">Bridging the Gap in</span>
@@ -103,19 +101,25 @@ const ExperienceSection: React.FC = () => {
         <div className="lg:text-center mb-12">
            <h2 className="text-base text-primary font-bold tracking-widest uppercase font-sans">Our Team's Background & Experience</h2>
            <p className="mt-6 max-w-4xl text-xl text-gray-600 lg:mx-auto font-sans leading-relaxed">
-             Founded by Mechanical Engineering graduates from the University of Waterloo, Red Bridge Solutions brings a rigorous technical standard to international procurement. Our team honed its expertise in product design and mass manufacturing at industry leaders like Tesla and Apple, taking complex hardware from infancy to large-scale production. We apply these same "Big Tech" principles of Design for Manufacturing (DFM) and quality assurance to derisk your supply chain and deliver precision results.
+             Founded by Mechanical Engineering graduates from the University of Waterloo, Red Bridge Solutions brings a rigorous technical standard to international procurement. Our team honed its expertise in product design and manufacturing at industry leaders like Tesla and Apple; we have experience navigating through the entire supply chain, bringing complex hardware from an idea to large-scale production.
            </p>
         </div>
         
         {/* Logo Strip */}
-        <div className="mt-12 pt-8 border-t border-gray-100">
-          <div className="grid grid-cols-2 gap-12 md:gap-8 md:grid-cols-4 items-center justify-items-center">
+        <div className="mt-16 pt-10 border-t border-gray-100">
+          <div className="text-center mb-10">
+            <p className="text-lg font-serif italic text-gray-400">
+              We gained our experience at firms you know and trust.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-12 md:gap-12 md:grid-cols-4 items-center justify-items-center">
              {/* University of Waterloo */}
              <div className="flex justify-center w-full px-4">
                <img 
                  src="/images/logos/uwaterloo.png" 
                  alt="University of Waterloo" 
-                 className="h-12 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                 className="h-16 md:h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                />
              </div>
              {/* Tesla */}
@@ -123,7 +127,7 @@ const ExperienceSection: React.FC = () => {
                <img 
                  src="/images/logos/tesla.png" 
                  alt="Tesla" 
-                 className="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                 className="h-11 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                />
              </div>
              {/* Apple */}
@@ -131,7 +135,7 @@ const ExperienceSection: React.FC = () => {
                <img 
                  src="/images/logos/apple.png" 
                  alt="Apple" 
-                 className="h-10 md:h-12 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                 className="h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                />
              </div>
              {/* Purolator */}
@@ -139,7 +143,7 @@ const ExperienceSection: React.FC = () => {
                <img 
                  src="/images/logos/purolator.png" 
                  alt="Purolator" 
-                 className="h-8 md:h-10 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
+                 className="h-11 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                />
              </div>
           </div>
