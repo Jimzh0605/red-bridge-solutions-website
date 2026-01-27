@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ShieldCheck, Cog, Handshake } from 'lucide-react';
 import { Pillar } from '../types';
 
@@ -9,10 +10,12 @@ const HeroSection: React.FC = () => {
         <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 px-4 sm:px-6 lg:px-8 pt-20">
           <main className="mt-10 mx-auto max-w-7xl sm:mt-12 md:mt-16 lg:mt-20 xl:mt-28">
             <div className="sm:text-center lg:text-left">
-              {/* Brand Text Replacement */}
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-2 sm:mb-4 tracking-tight leading-none">
-                Red Bridge Solutions
-              </h2>
+              {/* Brand Text */}
+              <div className="mb-2">
+                <span className="block text-3xl sm:text-4xl font-serif font-bold text-primary tracking-tight">
+                  Red Bridge Solutions
+                </span>
+              </div>
               
               <h1 className="text-4xl tracking-tight font-serif text-charcoal sm:text-5xl md:text-6xl">
                 <span className="block font-bold">Bridging the Gap in</span>
@@ -22,13 +25,13 @@ const HeroSection: React.FC = () => {
                 Red Bridge Solutions translates your product's technical specifications to ensure precise, compliant, and cost-effective manufacturing.
               </p>
               <div className="mt-8 sm:mt-10 sm:flex sm:justify-center lg:justify-start">
-                <div className="shadow rounded-lg">
-                  <a
-                    href="mailto:redbridgesolutions.co@gmail.com"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold text-white bg-primary hover:bg-[#4a0012] md:py-4 md:text-lg md:px-10 transition-colors duration-150 font-sans tracking-wide uppercase rounded-lg"
+                <div className="shadow rounded-md">
+                  <Link
+                    to="/consultation"
+                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold text-white bg-[#46515A] hover:bg-[#363f46] md:py-4 md:text-lg md:px-10 transition-colors duration-150 font-sans tracking-wide uppercase rounded-md"
                   >
                     Schedule a Consultation
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

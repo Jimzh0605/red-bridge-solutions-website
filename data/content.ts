@@ -5,13 +5,13 @@ export const teamData: TeamMember[] = [
     name: "Jimmy Zhang",
     role: "Co-Founder",
     description: "Specializing in supply chain optimization and technical negotiation.",
-    image: '/images/team/jimmy.jpg',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
   },
   {
     name: "Larry Wu",
     role: "Co-Founder",
     description: "Expertise in manufacturing engineering and quality assurance protocols.",
-    image: '/images/team/larry.jpg',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
   }
 ];
 
