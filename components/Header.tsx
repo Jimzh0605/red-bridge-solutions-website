@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-24">
+        <div className="flex justify-between items-center h-32">
           
           <div className="flex items-center">
             {/* Logo Image */}
@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
                 <img 
                   src="/images/logos/rbs-logo.png" 
                   alt="RBS Logo" 
-                  className="h-[72px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
+                  className="h-[90px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
                 />
               </Link>
             </div>
