@@ -62,96 +62,46 @@ const LogoSection: React.FC = () => {
     'uwaterloo.jpg'
   ];
 
+  // We duplicate the logos array to ensure seamless scrolling
+  const displayLogos = [...logos, ...logos];
+
   return (
     <section className="py-12 bg-white border-b border-gray-100 overflow-hidden">
-      <style>{`
-        .logo-marquee {
-          --gap: 3rem;
-          --duration: 45s;
-          position: relative;
-          display: flex;
-          overflow: hidden;
-          user-select: none;
-          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        }
-
-        .logos {
-          display: flex;
-          flex-shrink: 0;
-          align-items: center;
-          animation: scroll var(--duration) linear infinite;
-        }
-
-        .logo-list {
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-          gap: var(--gap);
-          padding-right: var(--gap);
-        }
-
-        .logo-item {
-          height: 45px;
-          width: auto;
-          object-fit: contain;
-          filter: grayscale(100%);
-          opacity: 0.6;
-          transition: opacity 0.3s;
-          /* Optimization: Ensure images don't cause layout shifts if they load late */
-          aspect-ratio: auto; 
-        }
-
-        .logo-item:hover {
-          filter: grayscale(0%);
-          opacity: 1;
-        }
-
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        
-        @media (min-width: 768px) {
-           .logo-marquee { --gap: 5rem; }
-           .logo-item { height: 60px; }
-        }
-      `}</style>
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
         <p className="text-lg font-serif italic text-gray-400">
           We gained our experience at firms you know and trust.
         </p>
       </div>
 
-      <div className="logo-marquee">
-        <div className="logos">
-          {/* First list */}
-          <div className="logo-list">
-            {logos.map((logo, i) => (
+      <div className="relative w-full overflow-hidden">
+        {/* Marquee Track */}
+        <div className="flex w-max animate-marquee gap-12 md:gap-20">
+          {displayLogos.map((logo, i) => (
+            <div key={i} className="flex items-center justify-center flex-shrink-0">
               <img 
-                key={`1-${i}`} 
                 src={`/images/logos/${logo}`} 
-                alt={logo.split('.')[0].replace(/-/g, ' ')} 
-                className="logo-item" 
+                alt={logo.replace('.jpg', '')} 
+                className="h-[45px] md:h-[60px] w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 loading="eager"
               />
-            ))}
-          </div>
-          {/* Duplicate list for loop */}
-          <div className="logo-list" aria-hidden="true">
-            {logos.map((logo, i) => (
-              <img 
-                key={`2-${i}`} 
-                src={`/images/logos/${logo}`} 
-                alt="" 
-                className="logo-item"
-                loading="eager" 
-              />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 45s linear infinite;
+        }
+        /* Ensure no pause on hover as requested */
+        .animate-marquee:hover {
+          animation-play-state: running;
+        }
+      `}</style>
     </section>
   );
 };
