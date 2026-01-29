@@ -50,116 +50,100 @@ const HeroSection: React.FC = () => {
 
 const LogoSection: React.FC = () => {
   const logos = [
-    { name: 'University of Waterloo', src: '/images/logos/uwaterloo.png', className: "h-16 md:h-20" },
-    { name: 'Tesla', src: '/images/logos/tesla.png', className: "h-11 md:h-14" },
-    { name: 'Apple', src: '/images/logos/apple.png', className: "h-14 md:h-16" },
-    { name: 'Toyota', src: '/images/logos/toyota.png', className: "h-12 md:h-16" },
-    { name: 'XPeng', src: '/images/logos/xpeng.png', className: "h-10 md:h-12" },
-    { name: 'BYD', src: '/images/logos/byd.png', className: "h-10 md:h-12" },
-    { name: 'Multimatic', src: '/images/logos/multimatic.png', className: "h-8 md:h-10" },
-    { name: 'RMT Robotics', src: '/images/logos/rmt.png', className: "h-11 md:h-14" },
-    { name: 'Purolator', src: '/images/logos/purolator.png', className: "h-11 md:h-14" },
+    'apple.jpg', 
+    'byd.jpg', 
+    'rmt.jpg', 
+    'purolator.jpg', 
+    'multimatic.jpg', 
+    'rbs-logo.jpg', 
+    'toyota.jpg', 
+    'tesla.jpg', 
+    'xpeng.jpg', 
+    'uwaterloo.jpg'
   ];
 
   return (
     <section className="py-12 bg-white border-b border-gray-100 overflow-hidden">
       <style>{`
-        :root {
+        .logo-marquee {
           --gap: 3rem;
-          --duration: 40s;
-        }
-        
-        .logo-container {
+          --duration: 45s;
+          position: relative;
+          display: flex;
+          overflow: hidden;
+          user-select: none;
           mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
           -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-          width: 100%;
-          overflow: hidden;
         }
 
-        .logo-scroll {
-          display: flex;
-          width: 100%;
-          gap: var(--gap);
-          user-select: none;
-        }
-
-        .logo-scroll__wrapper {
+        .logos {
           display: flex;
           flex-shrink: 0;
           align-items: center;
-          justify-content: space-around;
-          gap: var(--gap);
-          min-width: 100%;
           animation: scroll var(--duration) linear infinite;
         }
 
-        .logo-item-wrapper {
-          transition: transform 0.3s ease;
+        .logo-list {
           display: flex;
           align-items: center;
-          justify-content: center;
-        }
-        
-        .logo-item-wrapper:hover {
-          transform: scale(1.05);
+          justify-content: space-around;
+          gap: var(--gap);
+          padding-right: var(--gap);
         }
 
-        .logo-container:hover .logo-scroll__wrapper {
-          animation-play-state: paused;
+        .logo-item {
+          height: 45px;
+          width: auto;
+          object-fit: contain;
+          filter: grayscale(100%);
+          opacity: 0.6;
+          transition: opacity 0.3s;
         }
-        
+
+        .logo-item:hover {
+          filter: grayscale(0%);
+          opacity: 1;
+        }
+
         @keyframes scroll {
-          to {
-            transform: translateX(calc(-100% - var(--gap)));
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
         
-        @media (max-width: 768px) {
-           :root {
-             --gap: 2rem;
-             --duration: 30s;
-           }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          .logo-scroll__wrapper {
-            animation-play-state: paused;
-          }
+        @media (min-width: 768px) {
+           .logo-marquee { --gap: 5rem; }
+           .logo-item { height: 60px; }
         }
       `}</style>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
-        <div className="text-center">
-          <p className="text-lg font-serif italic text-gray-400">
-            We gained our experience at firms you know and trust.
-          </p>
-        </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
+        <p className="text-lg font-serif italic text-gray-400">
+          We gained our experience at firms you know and trust.
+        </p>
       </div>
 
-      <div className="logo-container">
-        <div className="logo-scroll">
-          {/* First set of logos */}
-          <div className="logo-scroll__wrapper">
-            {logos.map((logo, index) => (
-              <div key={`logo-1-${index}`} className="logo-item-wrapper px-4">
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
-                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
-                />
-              </div>
+      <div className="logo-marquee">
+        <div className="logos">
+          {/* First list */}
+          <div className="logo-list">
+            {logos.map((logo, i) => (
+              <img 
+                key={`1-${i}`} 
+                src={`/images/logos/${logo}`} 
+                alt={logo.replace('.jpg', '')} 
+                className="logo-item" 
+              />
             ))}
           </div>
-          
-          {/* Second identical set of logos for seamless loop */}
-          <div className="logo-scroll__wrapper">
-            {logos.map((logo, index) => (
-              <div key={`logo-2-${index}`} className="logo-item-wrapper px-4">
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
-                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
-                />
-              </div>
+          {/* Duplicate list for loop */}
+          <div className="logo-list" aria-hidden="true">
+            {logos.map((logo, i) => (
+              <img 
+                key={`2-${i}`} 
+                src={`/images/logos/${logo}`} 
+                alt={logo.replace('.jpg', '')} 
+                className="logo-item" 
+              />
             ))}
           </div>
         </div>
