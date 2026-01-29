@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50 flex items-center justify-center">
-        {/* Logistics/Shipping Container Image */}
+        {/* Logistics/Shipping Container Image - Optimized with lazy loading for below-the-fold if on mobile, but here it's hero so eager */}
         <div className="w-full h-full bg-cover bg-center opacity-80" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80")', filter: 'grayscale(100%) sepia(10%)' }}>
           <div className="absolute inset-0 bg-gradient-to-r from-white to-transparent"></div>
         </div>
@@ -98,6 +98,8 @@ const LogoSection: React.FC = () => {
           filter: grayscale(100%);
           opacity: 0.6;
           transition: opacity 0.3s;
+          /* Optimization: Ensure images don't cause layout shifts if they load late */
+          aspect-ratio: auto; 
         }
 
         .logo-item:hover {
@@ -130,8 +132,9 @@ const LogoSection: React.FC = () => {
               <img 
                 key={`1-${i}`} 
                 src={`/images/logos/${logo}`} 
-                alt={logo.replace('.jpg', '')} 
+                alt={logo.split('.')[0].replace(/-/g, ' ')} 
                 className="logo-item" 
+                loading="eager"
               />
             ))}
           </div>
@@ -141,8 +144,9 @@ const LogoSection: React.FC = () => {
               <img 
                 key={`2-${i}`} 
                 src={`/images/logos/${logo}`} 
-                alt={logo.replace('.jpg', '')} 
-                className="logo-item" 
+                alt="" 
+                className="logo-item"
+                loading="eager" 
               />
             ))}
           </div>
