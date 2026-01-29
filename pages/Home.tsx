@@ -48,6 +48,126 @@ const HeroSection: React.FC = () => {
   );
 };
 
+const LogoSection: React.FC = () => {
+  const logos = [
+    { name: 'University of Waterloo', src: '/images/logos/uwaterloo.png', className: "h-16 md:h-20" },
+    { name: 'Tesla', src: '/images/logos/tesla.png', className: "h-11 md:h-14" },
+    { name: 'Apple', src: '/images/logos/apple.png', className: "h-14 md:h-16" },
+    { name: 'Toyota', src: '/images/logos/toyota.png', className: "h-12 md:h-16" },
+    { name: 'XPeng', src: '/images/logos/xpeng.png', className: "h-10 md:h-12" },
+    { name: 'BYD', src: '/images/logos/byd.png', className: "h-10 md:h-12" },
+    { name: 'Multimatic', src: '/images/logos/multimatic.png', className: "h-8 md:h-10" },
+    { name: 'RMT Robotics', src: '/images/logos/rmt.png', className: "h-11 md:h-14" },
+    { name: 'Purolator', src: '/images/logos/purolator.png', className: "h-11 md:h-14" },
+  ];
+
+  return (
+    <section className="py-12 bg-white border-b border-gray-100 overflow-hidden">
+      <style>{`
+        :root {
+          --gap: 3rem;
+          --duration: 40s;
+        }
+        
+        .logo-container {
+          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .logo-scroll {
+          display: flex;
+          width: 100%;
+          gap: var(--gap);
+          user-select: none;
+        }
+
+        .logo-scroll__wrapper {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: space-around;
+          gap: var(--gap);
+          min-width: 100%;
+          animation: scroll var(--duration) linear infinite;
+        }
+
+        .logo-item-wrapper {
+          transition: transform 0.3s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .logo-item-wrapper:hover {
+          transform: scale(1.05);
+        }
+
+        .logo-container:hover .logo-scroll__wrapper {
+          animation-play-state: paused;
+        }
+        
+        @keyframes scroll {
+          to {
+            transform: translateX(calc(-100% - var(--gap)));
+          }
+        }
+        
+        @media (max-width: 768px) {
+           :root {
+             --gap: 2rem;
+             --duration: 30s;
+           }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .logo-scroll__wrapper {
+            animation-play-state: paused;
+          }
+        }
+      `}</style>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+        <div className="text-center">
+          <p className="text-lg font-serif italic text-gray-400">
+            We gained our experience at firms you know and trust.
+          </p>
+        </div>
+      </div>
+
+      <div className="logo-container">
+        <div className="logo-scroll">
+          {/* First set of logos */}
+          <div className="logo-scroll__wrapper">
+            {logos.map((logo, index) => (
+              <div key={`logo-1-${index}`} className="logo-item-wrapper px-4">
+                <img 
+                  src={logo.src} 
+                  alt={logo.name} 
+                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
+                />
+              </div>
+            ))}
+          </div>
+          
+          {/* Second identical set of logos for seamless loop */}
+          <div className="logo-scroll__wrapper">
+            {logos.map((logo, index) => (
+              <div key={`logo-2-${index}`} className="logo-item-wrapper px-4">
+                <img 
+                  src={logo.src} 
+                  alt={logo.name} 
+                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const PillarsSection: React.FC = () => {
   const pillars: Pillar[] = [
     {
@@ -101,55 +221,11 @@ const ExperienceSection: React.FC = () => {
   return (
     <section className="py-20 bg-white border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center mb-12">
+        <div className="lg:text-center">
            <h2 className="text-base text-primary font-bold tracking-widest uppercase font-sans">Our Team's Background & Experience</h2>
            <p className="mt-6 max-w-4xl text-xl text-gray-600 lg:mx-auto font-sans leading-relaxed">
              Founded by Mechanical Engineering graduates from the University of Waterloo, Red Bridge Solutions brings a rigorous technical standard to international procurement. Our team honed its expertise in product design and manufacturing at industry leaders like Tesla and Apple; we have experience navigating through the entire supply chain, bringing complex hardware from an idea to large-scale production.
            </p>
-        </div>
-        
-        {/* Logo Strip */}
-        <div className="mt-16 pt-10 border-t border-gray-100">
-          <div className="text-center mb-10">
-            <p className="text-lg font-serif italic text-gray-400">
-              We gained our experience at firms you know and trust.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-12 md:gap-12 md:grid-cols-4 items-center justify-items-center">
-             {/* University of Waterloo */}
-             <div className="flex justify-center w-full px-4">
-               <img 
-                 src="/images/logos/uwaterloo.png" 
-                 alt="University of Waterloo" 
-                 className="h-16 md:h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-               />
-             </div>
-             {/* Tesla */}
-             <div className="flex justify-center w-full px-4">
-               <img 
-                 src="/images/logos/tesla.png" 
-                 alt="Tesla" 
-                 className="h-11 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-               />
-             </div>
-             {/* Apple */}
-             <div className="flex justify-center w-full px-4">
-               <img 
-                 src="/images/logos/apple.png" 
-                 alt="Apple" 
-                 className="h-14 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-               />
-             </div>
-             {/* Purolator */}
-             <div className="flex justify-center w-full px-4">
-               <img 
-                 src="/images/logos/purolator.png" 
-                 alt="Purolator" 
-                 className="h-11 md:h-14 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
-               />
-             </div>
-          </div>
         </div>
       </div>
     </section>
@@ -160,6 +236,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <HeroSection />
+      <LogoSection />
       <PillarsSection />
       <ExperienceSection />
     </>
