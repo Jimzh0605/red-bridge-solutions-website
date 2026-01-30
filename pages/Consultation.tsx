@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ClipboardCheck, Truck, Factory, Mail, AlertCircle } from 'lucide-react';
+import { ClipboardCheck, Truck, Factory, Mail, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export const Consultation: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +11,8 @@ export const Consultation: React.FC = () => {
     details: ''
   });
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
@@ -18,21 +20,61 @@ export const Consultation: React.FC = () => {
       ...prev,
       [id]: value
     }));
-    // Clear error when user starts typing
     if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Custom Validation
+    // Validation
     if (!formData.firstName.trim() || !formData.lastName.trim() || !formData.email.trim()) {
       setError("Please kindly fill out all required fields (marked with *) so we can get in touch with you.");
       return;
     }
 
-    // No functionality needed yet beyond validation
-    console.log("Form submitted", formData);
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Fetch using relative path - Cloudflare Pages handles routing to functions/api/
+      const response = await fetch('/api/submit-consultation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Submission failed');
+      }
+
+      // Success Handling
+      setSubmitSuccess(true);
+      
+      // Clear form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        details: ''
+      });
+
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 5000);
+
+    } catch (err) {
+      console.error(err);
+      setError("There was a technical issue submitting your request. Please email us directly at contact@redbridgesolutions.io.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -58,105 +100,131 @@ export const Consultation: React.FC = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-8" noValidate>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 tracking-wide">First Name *</label>
-                <input 
-                  type="text" 
-                  id="firstName" 
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.firstName ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
-                  placeholder="Jane"
-                />
+          {submitSuccess ? (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-12 text-center animate-fade-in shadow-sm">
+              <div className="flex justify-center mb-6">
+                <CheckCircle size={64} className="text-green-600" strokeWidth={1.5} />
               </div>
-              <div className="space-y-2">
-                <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 tracking-wide">Last Name *</label>
-                <input 
-                  type="text" 
-                  id="lastName" 
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.lastName ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
-                  placeholder="Doe"
-                />
-              </div>
+              <h3 className="text-3xl font-serif font-bold text-gray-800 mb-4">Request Received</h3>
+              <p className="text-lg text-gray-600">
+                Thank you, {formData.firstName}. We have received your project details and will be in touch shortly.
+              </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 tracking-wide">Email *</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.email ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
-                  placeholder="jane.doe@company.com"
-                />
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 tracking-wide">First Name *</label>
+                  <input 
+                    type="text" 
+                    id="firstName" 
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.firstName ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
+                    placeholder="Jane"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="lastName" className="block text-sm font-semibold text-gray-700 tracking-wide">Last Name *</label>
+                  <input 
+                    type="text" 
+                    id="lastName" 
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.lastName ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
+                    placeholder="Doe"
+                  />
+                </div>
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 tracking-wide">Email *</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className={`block w-full border-b-2 px-0 py-2 bg-transparent transition-colors placeholder-gray-400 focus:ring-0 ${error && !formData.email ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary'}`}
+                    placeholder="jane.doe@company.com"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 tracking-wide">Phone</label>
+                  <input 
+                    type="tel" 
+                    id="phone" 
+                    value={formData.phone}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    className="block w-full border-gray-300 border-b-2 focus:border-primary focus:ring-0 px-0 py-2 bg-transparent transition-colors placeholder-gray-400"
+                    placeholder="(519) 456-7890"
+                  />
+                </div>
+              </div>
+
               <div className="space-y-2">
-                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 tracking-wide">Phone</label>
+                <label htmlFor="address" className="block text-sm font-semibold text-gray-700 tracking-wide">
+                  Address for Shipping Samples <span className="text-gray-400 font-normal italic">(Optional)</span>
+                </label>
                 <input 
-                  type="tel" 
-                  id="phone" 
-                  value={formData.phone}
+                  type="text" 
+                  id="address" 
+                  value={formData.address}
                   onChange={handleChange}
+                  disabled={isSubmitting}
                   className="block w-full border-gray-300 border-b-2 focus:border-primary focus:ring-0 px-0 py-2 bg-transparent transition-colors placeholder-gray-400"
-                  placeholder="(519) 456-7890"
+                  placeholder="123 Manufacturing Blvd, Unit 4"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label htmlFor="address" className="block text-sm font-semibold text-gray-700 tracking-wide">
-                Address for Shipping Samples <span className="text-gray-400 font-normal italic">(Optional)</span>
-              </label>
-              <input 
-                type="text" 
-                id="address" 
-                value={formData.address}
-                onChange={handleChange}
-                className="block w-full border-gray-300 border-b-2 focus:border-primary focus:ring-0 px-0 py-2 bg-transparent transition-colors placeholder-gray-400"
-                placeholder="123 Manufacturing Blvd, Unit 4"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="details" className="block text-sm font-semibold text-charcoal tracking-wide">Describe the products you're sourcing</label>
-              <textarea 
-                id="details" 
-                rows={6} 
-                value={formData.details}
-                onChange={handleChange}
-                className="block w-full border border-gray-300 rounded-sm p-3 focus:ring-1 focus:ring-primary focus:border-primary transition-colors bg-white placeholder-gray-400"
-                placeholder={`Please describe your technical requirements, estimated volume, material, and country of shipping.
+              <div className="space-y-2">
+                <label htmlFor="details" className="block text-sm font-semibold text-charcoal tracking-wide">Describe the products you're sourcing</label>
+                <textarea 
+                  id="details" 
+                  rows={6} 
+                  value={formData.details}
+                  onChange={handleChange}
+                  disabled={isSubmitting}
+                  className="block w-full border border-gray-300 rounded-sm p-3 focus:ring-1 focus:ring-primary focus:border-primary transition-colors bg-white placeholder-gray-400"
+                  placeholder={`Please describe your technical requirements, estimated volume, material, and country of shipping.
 
 Example:
 We are looking to manufacture a custom enclosure for a new IoT device. 
 - Volume: 5,000 units/year
 - Material: Aluminum 6061
 - Shipping: Canada`}
-              ></textarea>
-            </div>
+                ></textarea>
+              </div>
 
-            <div className="pt-6 text-center">
-              {error && (
-                <div className="mb-4 flex items-center justify-center text-red-700 bg-red-50 p-3 rounded border border-red-200">
-                  <AlertCircle size={18} className="mr-2" />
-                  <span className="text-sm font-medium">{error}</span>
-                </div>
-              )}
-              
-              <button 
-                type="submit" 
-                className="w-full md:w-auto md:min-w-[200px] flex justify-center items-center py-4 px-8 border border-transparent text-sm font-bold rounded text-white bg-primary hover:bg-[#600018] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all uppercase tracking-widest mx-auto shadow-md hover:shadow-lg transform active:scale-95 duration-150"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
+              <div className="pt-6 text-center">
+                {error && (
+                  <div className="mb-4 flex items-center justify-center text-red-700 bg-red-50 p-3 rounded border border-red-200">
+                    <AlertCircle size={18} className="mr-2 flex-shrink-0" />
+                    <span className="text-sm font-medium text-left">{error}</span>
+                  </div>
+                )}
+                
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className={`w-full md:w-auto md:min-w-[200px] flex justify-center items-center py-4 px-8 border border-transparent text-sm font-bold rounded text-white bg-primary hover:bg-[#600018] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all uppercase tracking-widest mx-auto shadow-md hover:shadow-lg transform active:scale-95 duration-150 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={18} className="mr-2 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit'
+                  )}
+                </button>
+              </div>
+            </form>
+          )}
         </div>
 
         {/* Divider */}
@@ -169,7 +237,7 @@ We are looking to manufacture a custom enclosure for a new IoT device.
             </div>
         </div>
 
-        {/* Expectations Section (Moved Below) */}
+        {/* Expectations Section */}
         <div>
           <h2 className="text-2xl font-serif font-bold text-charcoal mb-12 text-center tracking-tight">
             What to Expect
