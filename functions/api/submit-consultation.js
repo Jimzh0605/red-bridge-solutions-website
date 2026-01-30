@@ -43,17 +43,27 @@ export async function onRequestPost(context) {
     });
 
     const tokenResponse = await fetch(tokenUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: tokenParams,
-    });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  body: tokenParams,
+});
 
-    const tokenData = await tokenResponse.json();
+// Get response as text first to handle non-JSON responses
+const responseText = await tokenResponse.text();
+console.log('Zoho Token Response Status:', tokenResponse.status);
+console.log('Zoho Token Response:', responseText);
 
-    if (!tokenData.access_token) {
-      console.error('Zoho Auth Error:', JSON.stringify(tokenData));
-      throw new Error('Failed to authenticate with Zoho');
-    }
+// Try to parse as JSON
+let tokenData;
+try {
+  tokenData = JSON.parse(responseText);
+} catch (e) {
+  throw new Error(`Zoho returned non-JSON response: ${responseText.substring(0, 200)}`);
+}
+
+if (!tokenData.access_token) {
+  throw new Error(`Zoho auth failed: ${JSON.stringify(tokenData)}`);
+}
 
     // 4. Construct Email
     const emailContent = `
