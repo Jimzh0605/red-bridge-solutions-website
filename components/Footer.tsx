@@ -12,8 +12,8 @@ export const Footer: React.FC = () => {
             <div className="flex items-start space-x-2 text-gray-300">
               <MapPin size={18} className="mt-1 flex-shrink-0 text-primary" />
               <p className="text-sm">
-                280 Joseph St<br />
-                Kitchener, ON N2G 4Z5
+                240 Richmond St W<br />
+                Toronto, ON M5V 2C5
               </p>
             </div>
           </div>
@@ -28,8 +28,8 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={16} className="text-primary" />
-                <a href="mailto:redbridgesolutions.co@gmail.com" className="hover:text-white transition-colors">
-                  redbridgesolutions.co@gmail.com
+                <a href="mailto:contact@redbridgesolutions.io" className="hover:text-white transition-colors">
+                  contact@redbridgesolutions.io
                 </a>
               </div>
             </div>

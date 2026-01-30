@@ -278,9 +278,9 @@ We are looking to manufacture a custom enclosure for a new IoT device.
         {/* Footer Contact */}
         <div className="mt-20 pt-10 border-t border-gray-100 text-center">
            <p className="text-gray-500 mb-3 text-sm uppercase tracking-wide">Direct Contact</p>
-           <a href="mailto:redbridgesolutions.co@gmail.com" className="inline-flex items-center text-charcoal hover:text-primary transition-colors font-serif font-bold text-xl">
+           <a href="mailto:contact@redbridgesolutions.io" className="inline-flex items-center text-charcoal hover:text-primary transition-colors font-serif font-bold text-xl">
              <Mail size={20} className="mr-3 text-primary" />
-             redbridgesolutions.co@gmail.com
+             contact@redbridgesolutions.io
            </a>
         </div>
 
