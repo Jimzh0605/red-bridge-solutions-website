@@ -1,3 +1,13 @@
+export async function onRequestGet() {
+  return new Response(
+    JSON.stringify({ message: 'API endpoint is working! Use POST to submit.' }),
+    { 
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    }
+  );
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
