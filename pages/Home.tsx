@@ -50,15 +50,14 @@ const HeroSection: React.FC = () => {
 
 const LogoSection: React.FC = () => {
   const logos = [
-    { name: 'University of Waterloo', src: '/images/logos/uwaterloo.png', className: "h-16 md:h-20" },
-    { name: 'Tesla', src: '/images/logos/tesla.png', className: "h-11 md:h-14" },
-    { name: 'Apple', src: '/images/logos/apple.png', className: "h-14 md:h-16" },
-    { name: 'Toyota', src: '/images/logos/toyota.png', className: "h-12 md:h-16" },
-    { name: 'XPeng', src: '/images/logos/xpeng.png', className: "h-10 md:h-12" },
-    { name: 'BYD', src: '/images/logos/byd.png', className: "h-10 md:h-12" },
-    { name: 'Multimatic', src: '/images/logos/multimatic.png', className: "h-8 md:h-10" },
-    { name: 'RMT Robotics', src: '/images/logos/rmt.png', className: "h-11 md:h-14" },
-    { name: 'Purolator', src: '/images/logos/purolator.png', className: "h-11 md:h-14" },
+    { name: 'University of Waterloo', src: '/images/logos/uwaterloo.png' },
+    { name: 'Tesla', src: '/images/logos/tesla.png' },
+    { name: 'Apple', src: '/images/logos/apple.png' },
+    { name: 'Toyota', src: '/images/logos/toyota.png' },
+    { name: 'XPeng', src: '/images/logos/xpeng.png' },
+    { name: 'BYD', src: '/images/logos/byd.png' },
+    { name: 'Multimatic', src: '/images/logos/multimatic.png' },
+    { name: 'Purolator', src: '/images/logos/purolator.png' },
   ];
 
   return (
@@ -141,23 +140,23 @@ const LogoSection: React.FC = () => {
           <div className="logo-scroll__wrapper">
             {logos.map((logo, index) => (
               <div key={`logo-1-${index}`} className="logo-item-wrapper px-4">
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
-                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  className="h-10 md:h-12 w-auto max-w-[140px] md:max-w-[160px] object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                 />
               </div>
             ))}
           </div>
-          
+
           {/* Second identical set of logos for seamless loop */}
           <div className="logo-scroll__wrapper">
             {logos.map((logo, index) => (
               <div key={`logo-2-${index}`} className="logo-item-wrapper px-4">
-                <img 
-                  src={logo.src} 
-                  alt={logo.name} 
-                  className={`${logo.className} w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500`}
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  className="h-10 md:h-12 w-auto max-w-[140px] md:max-w-[160px] object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500"
                 />
               </div>
             ))}
