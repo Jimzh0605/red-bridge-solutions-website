@@ -1,4 +1,3 @@
-
 export interface Metric {
   percentage: number; // For the progress bar width (0-100)
   value: string;      // The display text (e.g., "18%", "$215k")

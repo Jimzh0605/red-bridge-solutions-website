@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { caseStudies, CaseStudy, Metric } from '../data/caseStudies';
-import { ArrowRight, ChevronDown, Minus, Plus } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // --- Utility: Intersection Observer Hook ---
@@ -109,7 +108,7 @@ const CaseStudyRow: React.FC<{ study: CaseStudy; isOpen: boolean; onToggle: () =
       {/* Header (Always Visible) */}
       <button 
         onClick={onToggle}
-        className="w-full text-left py-8 px-6 md:px-10 flex items-center justify-between focus:outline-none"
+        className="w-full text-left py-6 px-6 md:px-10 flex items-center justify-between focus:outline-none"
       >
         <div className="flex-grow pr-8">
           {/* Subtitle / Client Name */}
