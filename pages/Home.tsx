@@ -18,7 +18,7 @@ const HeroSection: React.FC = () => {
               </div>
               
               <h1 className="text-4xl tracking-tight font-serif text-charcoal sm:text-5xl md:text-6xl">
-                <span className="block font-bold">Bridging the Gap in</span>
+                <span className="block font-bold">The Bridge Between</span>
                 <span className="block text-primary font-medium leading-tight">North American and<br className="hidden lg:block" /> Asian Manufacturing</span>
               </h1>
               <p className="mt-6 text-base text-gray-600 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-light leading-relaxed font-sans">

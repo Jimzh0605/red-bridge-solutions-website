@@ -31,7 +31,7 @@ export const Header: React.FC = () => {
                 <img 
                   src="/images/logos/rbs-logo.png" 
                   alt="RBS Logo" 
-                  className="h-[90px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
+                  className="h-[52px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
                 />
               </Link>
             </div>

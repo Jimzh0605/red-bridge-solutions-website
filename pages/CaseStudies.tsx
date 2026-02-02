@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { caseStudies, CaseStudy, Metric } from '../data/caseStudies';
-import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, ChevronDown, Minus, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // --- Utility: Intersection Observer Hook ---
@@ -28,11 +29,11 @@ const useIntersectionObserver = (options: IntersectionObserverInit) => {
 };
 
 // --- Component: Hero Animated Stat ---
-const HeroStat: React.FC<{ value: string; label: string; delay?: number }> = ({ value, label, delay = 0 }) => {
+const HeroStat: React.FC<{ value: string; label: string; delay?: number; footnote?: string; labelWithAsterisk?: boolean }> = ({ value, label, delay = 0, footnote, labelWithAsterisk }) => {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.5 });
   const [displayValue, setDisplayValue] = useState(0);
 
-  // Parse number for animation (e.g. "150+" -> 150)
+  // Parse number for animation
   const numberMatch = value.match(/(\d+(\.\d+)?)/);
   const numberVal = numberMatch ? parseFloat(numberMatch[0]) : 0;
   const prefix = value.split(numberMatch?.[0] || '')[0] || '';
@@ -44,12 +45,10 @@ const HeroStat: React.FC<{ value: string; label: string; delay?: number }> = ({ 
     let startTimestamp: number | null = null;
     const duration = 2000;
     
-    // Add delay before starting
     const timeout = setTimeout(() => {
       const step = (timestamp: number) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        // EaseOutExpo
         const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         setDisplayValue(numberVal * ease);
         if (progress < 1) window.requestAnimationFrame(step);
@@ -63,28 +62,33 @@ const HeroStat: React.FC<{ value: string; label: string; delay?: number }> = ({ 
   const formattedNum = displayValue.toFixed(numberVal % 1 !== 0 ? 1 : 0);
 
   return (
-    <div ref={ref} className="text-center p-6 border-r last:border-r-0 border-white/10">
+    <div ref={ref} className="relative h-full text-center p-6 pb-12 border-r last:border-r-0 border-white/10 flex flex-col items-center justify-center">
       <div className="text-5xl md:text-6xl font-serif font-bold text-white mb-2 tracking-tight">
         {prefix}{formattedNum}{suffix}
       </div>
-      <div className="text-sm font-bold uppercase tracking-widest text-white/60 font-sans">
-        {label}
+      <div className="text-sm font-bold uppercase tracking-widest text-white/60 font-sans relative">
+        {label}{labelWithAsterisk && <span className="ml-0.5 text-xs text-white/60 font-medium align-top">*</span>}
       </div>
+      {footnote && (
+        <div className="absolute bottom-1.5 left-0 right-0 text-center text-[9px] text-white/40 uppercase tracking-widest font-sans whitespace-nowrap px-2">
+            {footnote}
+        </div>
+      )}
     </div>
   );
 };
 
-// --- Component: Metric Bar (Mini-Infographic) ---
+// --- Component: Metric Bar ---
 const MetricBar: React.FC<{ metric: Metric; delay: number }> = ({ metric, delay }) => {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
   
   return (
-    <div ref={ref} className="w-full">
-      <div className="flex justify-between items-end mb-1">
-        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{metric.label}</span>
-        <span className="text-sm font-bold text-primary tabular-nums">{metric.value}</span>
+    <div ref={ref} className="w-full mb-4 last:mb-0">
+      <div className="flex justify-between items-end mb-2">
+        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">{metric.label}</span>
+        <span className="text-base font-bold text-primary tabular-nums">{metric.value}</span>
       </div>
-      <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
+      <div className="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
         <div 
           className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
           style={{ 
@@ -97,59 +101,104 @@ const MetricBar: React.FC<{ metric: Metric; delay: number }> = ({ metric, delay 
   );
 };
 
-// --- Component: Case Study Card ---
-const CaseStudyCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+// --- Component: Accordion Row ---
+const CaseStudyRow: React.FC<{ study: CaseStudy; isOpen: boolean; onToggle: () => void }> = ({ study, isOpen, onToggle }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full group">
+    <div className={`group bg-white border-b border-gray-200 transition-all duration-500 ${isOpen ? 'bg-gray-50/50' : 'hover:bg-gray-50'}`}>
       
-      {/* Content Body */}
-      <div className="p-8 flex-grow flex flex-col">
-        {/* Category Badge - Moved inside since image is gone */}
-        <div className="mb-4">
-           <span className="inline-block bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-primary/20">
-             {study.category}
-           </span>
-        </div>
-
-        <h3 className="text-2xl font-serif font-bold text-charcoal mb-4 leading-tight group-hover:text-primary transition-colors">
-          {study.title}
-        </h3>
-
-        <div className="space-y-4 mb-6 flex-grow">
-          <div>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Challenge</span>
-            <p className="text-sm text-gray-600 leading-relaxed mt-2 border-l-2 border-gray-200 pl-3">
-              {study.challenge}
-            </p>
+      {/* Header (Always Visible) */}
+      <button 
+        onClick={onToggle}
+        className="w-full text-left py-8 px-6 md:px-10 flex items-center justify-between focus:outline-none"
+      >
+        <div className="flex-grow pr-8">
+          {/* Subtitle / Client Name */}
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 font-sans">
+             {study.client}
           </div>
-          
-          <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-4 block">The Solution</span>
-            <p className="text-sm text-gray-600 leading-relaxed mt-2 border-l-2 border-primary pl-3">
-              {study.solution}
-            </p>
+          {/* Main Title */}
+          <h3 className={`text-xl md:text-2xl font-serif font-bold text-charcoal transition-colors duration-200 ${isOpen ? 'text-primary' : 'group-hover:text-primary'}`}>
+            {study.title}
+          </h3>
+        </div>
+        
+        <div className="flex-shrink-0 ml-4">
+          <div className="p-3 rounded-full border border-gray-100 bg-white group-hover:border-primary/20 shadow-sm transition-colors duration-300">
+             <ChevronDown 
+              size={24} 
+              className={`text-primary transform transition-transform duration-500`}
+              style={{ 
+                transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
+              }} 
+            />
           </div>
         </div>
+      </button>
 
-        {/* Toggle Button */}
-        <button 
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center text-xs font-bold text-primary uppercase tracking-widest hover:text-[#500014] transition-colors mb-8"
-        >
-          {isExpanded ? (
-            <>Read Less <ChevronUp size={14} className="ml-1" /></>
-          ) : (
-            <>Read Solution <ChevronDown size={14} className="ml-1" /></>
-          )}
-        </button>
+      {/* Expanded Content */}
+      <div 
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
+      >
+        <div className="px-6 md:px-10 pb-10 pt-2">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-gray-200/60 pt-8">
+            
+            {/* Left Column: Narrative */}
+            <div className="lg:col-span-7 space-y-8">
+              {/* Challenge */}
+              <div>
+                <h4 className="text-sm font-bold text-charcoal uppercase tracking-widest mb-3 border-l-4 border-gray-300 pl-3">
+                  The Challenge
+                </h4>
+                <p className="text-base text-gray-600 leading-relaxed font-sans pl-4">
+                  {study.challenge}
+                </p>
+              </div>
+              
+              {/* Solution */}
+              <div>
+                <h4 className="text-sm font-bold text-primary uppercase tracking-widest mb-3 border-l-4 border-primary pl-3">
+                  What RBS Did
+                </h4>
+                <ul className="list-disc pl-8 space-y-2">
+                  {study.solution.map((item, idx) => (
+                    <li key={idx} className="text-base text-gray-600 leading-relaxed font-sans">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-        {/* Mini Infographics Footer */}
-        <div className="pt-6 border-t border-gray-100 grid grid-cols-1 gap-4 mt-auto">
-          {study.metrics.map((metric, idx) => (
-             <MetricBar key={idx} metric={metric} delay={idx * 200} />
-          ))}
+              {/* Engineering Competency */}
+              {study.engineering && study.engineering.length > 0 && (
+                 <div>
+                    <h4 className="text-sm font-bold text-gray-800 uppercase tracking-widest mb-3 border-l-4 border-gray-800 pl-3">
+                      Technical Requirements
+                    </h4>
+                    <ul className="list-disc pl-8 space-y-2">
+                      {study.engineering.map((item, idx) => (
+                        <li key={idx} className="text-base text-gray-600 leading-relaxed font-sans">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                 </div>
+              )}
+            </div>
+
+            {/* Right Column: Metrics */}
+            <div className="lg:col-span-5 bg-white p-6 rounded-lg border border-gray-100 shadow-sm h-fit">
+              <h4 className="text-sm font-serif font-bold text-charcoal mb-6 pb-2 border-b border-gray-100">
+                Illustrative Results
+              </h4>
+              <div className="space-y-6">
+                {study.metrics.map((metric, idx) => (
+                   <MetricBar key={idx} metric={metric} delay={isOpen ? idx * 200 : 0} />
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
@@ -158,57 +207,81 @@ const CaseStudyCard: React.FC<{ study: CaseStudy }> = ({ study }) => {
 
 // --- Main Page ---
 export const CaseStudies: React.FC = () => {
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  const handleToggle = (id: string) => {
+    setOpenId(prev => (prev === id ? null : id));
+  };
+
   return (
-    <div className="bg-offwhite min-h-screen">
+    <div className="bg-white min-h-screen">
       
-      {/* 1. Hero Section with Animated Stats (Burgundy Theme) */}
-      <div className="bg-primary text-white py-20 relative overflow-hidden">
+      {/* 1. Hero Section */}
+      <div className="bg-primary text-white py-12 relative overflow-hidden">
         {/* Abstract Background Decoration */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-white opacity-5 transform skew-x-12 translate-x-20"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-black opacity-10 rounded-full blur-3xl -translate-x-10 translate-y-10"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Proven Results</h1>
             <p className="text-white/80 text-lg max-w-2xl mx-auto font-light">
-              We don't just advise; we execute. Browse our portfolio of technical procurement wins.
+              Our portfolio of technical procurement achievements at RBS
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-b border-white/20 divide-y md:divide-y-0 md:divide-x divide-white/20 bg-white/5 rounded-lg backdrop-blur-sm">
-            <HeroStat value="22%" label="Avg Cost Reduction" delay={0} />
-            <HeroStat value="150+" label="Projects Delivered" delay={200} />
-            <HeroStat value="$50M+" label="Total Savings" delay={400} />
+            <HeroStat value="14%" label="Avg Cost Reduction" delay={0} />
+            <HeroStat value="20+" label="Projects Delivered" delay={200} />
+            <HeroStat 
+              value="$50M+" 
+              label="Total Savings" 
+              delay={400} 
+              labelWithAsterisk={true}
+              footnote="* Refer to North American vehicle program"
+            />
           </div>
         </div>
       </div>
 
-      {/* 2. Case Study Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      {/* 2. Case Study List (Accordion) */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="mb-10 pl-2">
+            <h2 className="text-3xl font-serif font-bold text-charcoal">Case Portfolio</h2>
+            <p className="text-gray-500 mt-2">Select a project to view technical details and financial impact.</p>
+        </div>
+        
+        <div className="border-t border-gray-200">
           {caseStudies.map(study => (
-            <CaseStudyCard key={study.id} study={study} />
+            <CaseStudyRow 
+              key={study.id} 
+              study={study} 
+              isOpen={openId === study.id}
+              onToggle={() => handleToggle(study.id)}
+            />
           ))}
         </div>
       </div>
 
       {/* Bottom CTA */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-        <div className="bg-charcoal rounded-2xl p-12 text-center shadow-2xl relative overflow-hidden group">
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black"></div>
-          <div className="relative z-10">
-            <h2 className="text-3xl font-serif font-bold text-white mb-6">
-              See a similar challenge?
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-              Every project starts with a feasibility assessment. Let us review your drawings and provide a no-obligation sourcing strategy.
-            </p>
-            <Link 
-              to="/consultation" 
-              className="inline-flex items-center px-10 py-4 bg-primary text-white font-bold rounded shadow-lg hover:shadow-primary/50 hover:bg-[#900028] transition-all transform hover:-translate-y-1 uppercase tracking-widest text-sm"
-            >
-              Start Consultation <ArrowRight className="ml-2" size={16} />
-            </Link>
+      <div className="bg-offwhite py-24 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-charcoal rounded-2xl p-12 text-center shadow-2xl relative overflow-hidden group">
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gray-700 via-gray-900 to-black"></div>
+            <div className="relative z-10">
+              <h2 className="text-3xl font-serif font-bold text-white mb-6">
+                See a similar challenge?
+              </h2>
+              <p className="text-gray-400 max-w-4xl mx-auto mb-8">
+                Let us review your technical requirements and provide a tailored sourcing strategy for your needs.
+              </p>
+              <Link 
+                to="/consultation" 
+                className="inline-flex items-center px-10 py-4 bg-primary text-white font-bold rounded shadow-lg hover:shadow-primary/50 hover:bg-[#900028] transition-all transform hover:-translate-y-1 uppercase tracking-widest text-sm"
+              >
+                Schedule a Consultation <ArrowRight className="ml-2" size={16} />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
