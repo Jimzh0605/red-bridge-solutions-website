@@ -1,5 +1,5 @@
 import React, { useEffect, Suspense, Component, ReactNode } from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 
@@ -81,10 +81,29 @@ const ScrollToTop: React.FC = () => {
   return null;
 };
 
+// Redirect legacy hash URLs to clean URLs
+const HashRedirect: React.FC = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if there's a hash-based route in the URL
+    const hash = window.location.hash;
+    if (hash && hash.startsWith('#/')) {
+      // Extract the path from the hash (e.g., "#/about" -> "/about")
+      const cleanPath = hash.slice(1); // Remove the leading '#'
+      // Navigate to the clean URL
+      navigate(cleanPath, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
+};
+
 const App: React.FC = () => {
   return (
     <Router>
       <ScrollToTop />
+      <HashRedirect />
       <div className="flex flex-col min-h-screen bg-offwhite font-sans text-charcoal">
         <Header />
         <main id="main-content" className="flex-grow" role="main">
