@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Logo Carousel Styles */
+:root {
+  --gap: 3rem;
+  --duration: 40s;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --gap: 2rem;
+    --duration: 30s;
+  }
+}
+
+.logo-container {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  width: 100%;
+  overflow: hidden;
+}
+
+.logo-scroll {
+  display: flex;
+  width: 100%;
+  gap: var(--gap);
+  user-select: none;
+}
+
+.logo-scroll__wrapper {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--gap);
+  min-width: 100%;
+  animation: scroll var(--duration) linear infinite;
+}
+
+.logo-item-wrapper {
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-item-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.logo-container:hover .logo-scroll__wrapper {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-scroll__wrapper {
+    animation-play-state: paused;
+  }
+}
+
+/* Focus visible styles for accessibility */
+@layer utilities {
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+}

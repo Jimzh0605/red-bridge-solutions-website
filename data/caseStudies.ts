@@ -1,20 +1,7 @@
-export interface Metric {
-  percentage: number; // For the progress bar width (0-100)
-  value: string;      // The display text (e.g., "18%", "$215k")
-  label: string;      // The label (e.g., "Landed Cost")
-}
+import { CaseStudy, Metric } from '../types';
 
-export interface CaseStudy {
-  id: string;
-  title: string;
-  client: string;
-  category: string; // Used for filtering or metadata
-  challenge: string; // Maps to "Procurement problem"
-  solution: string[]; // Maps to "What RBS did" (Bulleted)
-  engineering: string[]; // Maps to "Engineering competency used" (Bulleted)
-  metrics: [Metric, Metric, Metric]; // Exactly 3 metrics per case
-  image: string;
-}
+// Re-export types for convenience
+export type { CaseStudy, Metric };
 
 export const caseStudies: CaseStudy[] = [
   {
@@ -36,8 +23,7 @@ export const caseStudies: CaseStudy[] = [
       { percentage: 18, value: "18%", label: "Landed Cost Reduction" },
       { percentage: 62, value: "62%", label: "Quote Variance Reduction" },
       { percentage: 15, value: "15%", label: "Lead-Time Reduction" }
-    ],
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800'
+    ]
   },
   {
     id: 'blind-spot',
@@ -58,8 +44,7 @@ export const caseStudies: CaseStudy[] = [
       { percentage: 35, value: "35%", label: "NRE & Tooling Spend" },
       { percentage: 14, value: "14%", label: "Unit Cost Reduction" },
       { percentage: 20, value: "20%", label: "Assembly Time Reduction" }
-    ],
-    image: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=800'
+    ]
   },
   {
     id: 'mechanism-assembly-2',
@@ -80,8 +65,7 @@ export const caseStudies: CaseStudy[] = [
       { percentage: 18, value: "18%", label: "Landed Cost Reduction" },
       { percentage: 62, value: "62%", label: "Quote Variance Reduction" },
       { percentage: 15, value: "15%", label: "Lead-Time Reduction" }
-    ],
-    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=800'
+    ]
   },
   {
     id: 'hvac-duct',
@@ -102,8 +86,7 @@ export const caseStudies: CaseStudy[] = [
       { percentage: 12, value: "12%", label: "Landed Cost Reduction" },
       { percentage: 28, value: "28%", label: "Assembly Labor Reduction" },
       { percentage: 35, value: "35%", label: "Defect Opportunities" }
-    ],
-    image: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&q=80&w=800'
+    ]
   },
   {
     id: 'stamped-metal',
@@ -124,7 +107,6 @@ export const caseStudies: CaseStudy[] = [
       { percentage: 9, value: "9%", label: "Piece-Price Reduction" },
       { percentage: 28, value: "28%", label: "Total Cost of Quality" },
       { percentage: 35, value: "35%", label: "Inspection Time" }
-    ],
-    image: 'https://images.unsplash.com/photo-1563968743333-044cef8004c3?auto=format&fit=crop&q=80&w=800'
+    ]
   }
 ];
