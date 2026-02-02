@@ -274,7 +274,7 @@ export const CaseStudies: React.FC = memo(() => {
           <div className="text-center mb-10">
             <h1 id="case-studies-heading" className="text-4xl md:text-5xl font-serif font-bold mb-4">Proven Results</h1>
             <p className="text-white/80 text-lg max-w-2xl mx-auto font-light">
-              Our portfolio of technical procurement achievements at RBS
+              Real projects. Real cost savings.
             </p>
           </div>
 
