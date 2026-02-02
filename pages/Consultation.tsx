@@ -46,7 +46,7 @@ export const Consultation: React.FC = () => {
       // Note: These are public keys - EmailJS security comes from domain restrictions, not hiding these values
       const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_j47yykd';
       const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_6u489kw';
-      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'qVO7jHnqZO8UBYA_K';
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'gVO7jHnqZ08UBYA_K';
 
       // Send the email
       await emailjs.send(
@@ -82,7 +82,7 @@ export const Consultation: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl font-serif font-bold text-charcoal">Schedule Consultation</h1>
           <p className="mt-4 text-lg text-gray-500 font-sans max-w-2xl mx-auto">
-            Connect with our engineering team to discuss your manufacturing requirements.
+            Discuss your manufacturing requirements with our engineering team.
           </p>
         </div>
       </div>
@@ -94,7 +94,7 @@ export const Consultation: React.FC = () => {
           <div className="text-center mb-10">
             <h2 className="text-3xl font-serif font-bold text-charcoal">Send Us A Message</h2>
             <p className="mt-4 text-gray-600 leading-relaxed">
-              Fill out this form with details on your project and we'll assign a professional agent to follow up and provide personalized assistance.
+              Tell us about your project and we'll follow up to discuss how we can help.
             </p>
           </div>
 

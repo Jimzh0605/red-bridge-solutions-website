@@ -44,7 +44,7 @@ const HeroSection: React.FC = memo(() => {
                 <span className="block text-primary font-medium leading-tight">North American and<br className="hidden lg:block" /> Asian Manufacturing</span>
               </h1>
               <p className="mt-6 text-base text-gray-600 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 font-light leading-relaxed font-sans">
-                Red Bridge Solutions translates your product's technical specifications to ensure precise, compliant, and cost-effective manufacturing.
+                We translate your technical specifications into manufacturing-ready documentation that prevents miscommunication and cost overruns.
               </p>
               <div className="mt-8 sm:mt-10 sm:flex sm:justify-center lg:justify-start">
                 <div className="shadow rounded-md">
@@ -200,7 +200,7 @@ const ExperienceSection: React.FC = memo(() => {
         <div className="lg:text-center">
           <h2 id="experience-heading" className="text-base text-primary font-bold tracking-widest uppercase font-sans">Our Team's Background & Experience</h2>
           <p className="mt-6 max-w-4xl text-xl text-gray-600 lg:mx-auto font-sans leading-relaxed">
-            Founded by Mechanical Engineering graduates from the University of Waterloo, Red Bridge Solutions brings a rigorous technical standard to international procurement. Our team honed its expertise in product design and manufacturing at industry leaders like Tesla and Apple; we have experience navigating through the entire supply chain, bringing complex hardware from an idea to large-scale production.
+            Founded by Mechanical Engineering graduates from the University of Waterloo. Our team gained expertise in product design and manufacturing at Tesla and Apple, navigating the entire supply chain from concept to large-scale production.
           </p>
         </div>
       </div>

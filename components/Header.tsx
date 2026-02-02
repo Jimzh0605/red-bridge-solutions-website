@@ -46,7 +46,7 @@ export const Header: React.FC = memo(() => {
                 <img
                   src="/images/logos/rbs-logo.png"
                   alt="Red Bridge Solutions Logo"
-                  className="h-[40px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
+                  className="h-[46px] w-auto object-contain transition-opacity duration-200 hover:opacity-80"
                 />
               </Link>
             </div>
