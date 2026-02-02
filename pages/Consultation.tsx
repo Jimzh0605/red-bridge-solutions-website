@@ -42,14 +42,11 @@ export const Consultation: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // EmailJS configuration from environment variables
-      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-        throw new Error('EmailJS configuration is missing');
-      }
+      // EmailJS configuration
+      // Note: These are public keys - EmailJS security comes from domain restrictions, not hiding these values
+      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_j47yykd';
+      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_6u489kw';
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'qVO7jHnqZO8UBYA_K';
 
       // Send the email
       await emailjs.send(
