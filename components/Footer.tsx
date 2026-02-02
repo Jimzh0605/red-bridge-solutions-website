@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Linkedin, Mail, MapPin, Phone, Youtube } from 'lucide-react';
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC = memo(() => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-charcoal text-white pt-12 pb-8">
+    <footer className="bg-charcoal text-white pt-12 pb-8" role="contentinfo">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 border-b border-gray-700 pb-8">
           {/* Brand & Location */}
           <div className="space-y-4">
             <h3 className="text-xl font-serif text-white">Red Bridge Solutions</h3>
-            <div className="flex items-start space-x-2 text-gray-300">
-              <MapPin size={18} className="mt-1 flex-shrink-0 text-primary" />
+            <address className="flex items-start space-x-2 text-gray-300 not-italic">
+              <MapPin size={18} className="mt-1 flex-shrink-0 text-primary" aria-hidden="true" />
               <p className="text-sm">
                 240 Richmond St W<br />
                 Toronto, ON M5V 2C5
               </p>
-            </div>
+            </address>
           </div>
 
           {/* Contacts */}
@@ -23,12 +25,20 @@ export const Footer: React.FC = () => {
             <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">Contact</h4>
             <div className="space-y-2 text-sm text-gray-300">
               <div className="flex items-center space-x-2">
-                <Phone size={16} className="text-primary" />
-                <span>+1 902-208-0605</span>
+                <Phone size={16} className="text-primary" aria-hidden="true" />
+                <a
+                  href="tel:+19022080605"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal rounded"
+                >
+                  +1 902-208-0605
+                </a>
               </div>
               <div className="flex items-center space-x-2">
-                <Mail size={16} className="text-primary" />
-                <a href="mailto:contact@redbridgesolutions.io" className="hover:text-white transition-colors">
+                <Mail size={16} className="text-primary" aria-hidden="true" />
+                <a
+                  href="mailto:contact@redbridgesolutions.io"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal rounded"
+                >
                   contact@redbridgesolutions.io
                 </a>
               </div>
@@ -38,31 +48,35 @@ export const Footer: React.FC = () => {
           {/* Social / Legal */}
           <div className="space-y-4">
             <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">Connect</h4>
-            <div className="flex space-x-4">
-              <a 
-                href="https://www.linkedin.com/company/red-bridge-solutions/posts/?feedView=all" 
-                target="_blank" 
+            <nav aria-label="Social media links" className="flex space-x-4">
+              <a
+                href="https://www.linkedin.com/company/red-bridge-solutions/posts/?feedView=all"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors"
+                className="inline-block p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
+                aria-label="Follow us on LinkedIn"
               >
-                <Linkedin size={20} />
+                <Linkedin size={20} aria-hidden="true" />
               </a>
-              <a 
-                href="https://www.youtube.com/channel/UCh78IC2TTJ8HNRj2-csIZYQ" 
-                target="_blank" 
+              <a
+                href="https://www.youtube.com/channel/UCh78IC2TTJ8HNRj2-csIZYQ"
+                target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors"
+                className="inline-block p-2 bg-gray-800 rounded-full hover:bg-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-charcoal"
+                aria-label="Subscribe to our YouTube channel"
               >
-                <Youtube size={20} />
+                <Youtube size={20} aria-hidden="true" />
               </a>
-            </div>
+            </nav>
           </div>
         </div>
 
         <div className="text-center text-xs text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Red Bridge Solutions. All rights reserved.</p>
+          <p>&copy; {currentYear} Red Bridge Solutions. All rights reserved.</p>
         </div>
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';

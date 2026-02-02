@@ -42,16 +42,20 @@ export const Consultation: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // EmailJS configuration
-      const SERVICE_ID = 'service_j47yykd';
-      const TEMPLATE_ID = 'template_6u489kw';
-      const PUBLIC_KEY = 'qVO7jHnqZO8UBYA_K';
+      // EmailJS configuration from environment variables
+      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+        throw new Error('EmailJS configuration is missing');
+      }
 
       // Send the email
       await emailjs.send(
         SERVICE_ID,
         TEMPLATE_ID,
-        formData, // formData keys match the template variables (firstName, lastName, etc.)
+        formData,
         PUBLIC_KEY
       );
 
