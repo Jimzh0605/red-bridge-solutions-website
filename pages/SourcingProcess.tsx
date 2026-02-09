@@ -6,16 +6,17 @@ import {
   Wrench,
   ShieldCheck,
   TrendUp,
-  Check
+  Check,
+  Icon
 } from 'phosphor-react';
 
 interface Stage {
   id: number;
   title: string;
-  icon: React.ComponentType<{ size?: number; weight?: string; className?: string }>;
+  icon: Icon;
   duration: string;
   bullets: Array<{
-    icon: React.ComponentType<{ size?: number; weight?: string; className?: string }>;
+    icon: Icon;
     text: string;
   }>;
 }
