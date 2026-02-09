@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useRef } from 'react';
+import React, { memo } from 'react';
 import {
   MagnifyingGlass,
   Factory,
@@ -124,77 +124,47 @@ const SERVICE_TIERS: ServiceTier[] = [
 
 const StageCard = memo<{
   stage: Stage;
-  isExpanded: boolean;
-  isLast: boolean;
-  side: 'left' | 'right';
-}>(({ stage, isExpanded, isLast, side }) => {
+}>(({ stage }) => {
   const Icon = stage.icon;
 
   return (
-    <div
-      className={`
-        transition-all duration-500 ease-out
-        ${isExpanded ? 'opacity-100' : 'opacity-70'}
-        ${side === 'left' ? 'translate-x-0' : 'translate-x-0'}
-      `}
-    >
-      <div
-        className={`
-          bg-white rounded-lg overflow-hidden
-          transition-all duration-500 ease-out
-          ${isExpanded
-            ? 'shadow-lg shadow-gray-300/50 scale-100'
-            : 'shadow-md shadow-gray-200/50 scale-98'
-          }
-          ${isLast && !isExpanded ? 'mb-0' : ''}
-        `}
-      >
-        {/* Stage Header - Always visible with colored background */}
-        <div className={`
-          bg-primary text-white px-6 py-4
-          transition-all duration-500
-          ${isExpanded ? 'bg-opacity-100' : 'bg-opacity-90'}
-        `}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center rounded-full bg-white bg-opacity-20 w-10 h-10 flex-shrink-0">
-                <Icon size={22} weight="bold" />
-              </div>
-              <h3 className="font-serif font-bold text-lg md:text-xl">
-                {stage.title}
-              </h3>
+    <div className="bg-white rounded-lg overflow-hidden shadow-lg shadow-gray-300/50">
+      {/* Stage Header with colored background */}
+      <div className="bg-primary text-white px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center rounded-full bg-white bg-opacity-20 w-10 h-10 flex-shrink-0">
+              <Icon size={22} weight="bold" />
             </div>
-            <div className="text-xs md:text-sm font-medium bg-white bg-opacity-20 px-3 py-1 rounded-full whitespace-nowrap ml-2">
-              {stage.duration}
-            </div>
+            <h3 className="font-serif font-bold text-lg md:text-xl">
+              {stage.title}
+            </h3>
+          </div>
+          <div className="text-xs md:text-sm font-medium bg-white bg-opacity-20 px-3 py-1 rounded-full whitespace-nowrap ml-2">
+            {stage.duration}
           </div>
         </div>
+      </div>
 
-        {/* Expandable Content */}
-        <div
-          className={`
-            overflow-hidden transition-all duration-500 ease-out
-            ${isExpanded ? 'max-h-96 opacity-100 py-6 px-6' : 'max-h-0 opacity-0 py-0 px-6'}
-          `}
-        >
-          <ul className="space-y-3">
-            {stage.bullets.map((bullet, idx) => {
-              const BulletIcon = bullet.icon;
-              return (
-                <li key={idx} className="flex items-start gap-3">
-                  <BulletIcon
-                    size={18}
-                    weight="regular"
-                    className="text-primary flex-shrink-0 mt-0.5"
-                  />
-                  <span className="text-gray-700 text-sm leading-relaxed">
-                    {bullet.text}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+      {/* Card Content */}
+      <div className="py-6 px-6">
+        <ul className="space-y-3">
+          {stage.bullets.map((bullet, idx) => {
+            const BulletIcon = bullet.icon;
+            return (
+              <li key={idx} className="flex items-start gap-3">
+                <BulletIcon
+                  size={18}
+                  weight="regular"
+                  className="text-primary flex-shrink-0 mt-0.5"
+                />
+                <span className="text-gray-700 text-sm leading-relaxed">
+                  {bullet.text}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );
@@ -202,158 +172,8 @@ const StageCard = memo<{
 
 StageCard.displayName = 'StageCard';
 
-const ProgressLine = memo<{ progress: number }>(({ progress }) => {
-  return (
-    <div className="absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 pointer-events-none">
-      {/* Background line */}
-      <div className="absolute inset-0 bg-gray-200" />
-
-      {/* Progress line */}
-      <div
-        className="absolute top-0 left-0 right-0 bg-gradient-to-b from-primary to-[#a00028]"
-        style={{
-          height: `${Math.max(0.5, progress)}%`,
-          transition: 'height 50ms linear'
-        }}
-      />
-
-      {/* Animated dot at the end of progress */}
-      <div
-        className="absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-primary rounded-full shadow-lg"
-        style={{
-          top: `${Math.max(0, Math.min(100, progress))}%`,
-          opacity: 1,
-          transition: 'top 50ms linear'
-        }}
-      >
-        <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-75" />
-      </div>
-    </div>
-  );
-});
-
-ProgressLine.displayName = 'ProgressLine';
 
 export const SourcingProcess: React.FC = memo(() => {
-  const [expandedStage, setExpandedStage] = useState<number | null>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [showTable, setShowTable] = useState(false);
-  const roadmapRef = useRef<HTMLDivElement>(null);
-  const stageRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const tableRef = useRef<HTMLDivElement>(null);
-
-  // Smooth scroll progress tracking with requestAnimationFrame
-  useEffect(() => {
-    let rafId: number;
-    let currentProgress = 0;
-    let targetProgress = 0;
-
-    const calculateProgress = () => {
-      if (!roadmapRef.current || stageRefs.current.length === 0) return 0;
-
-      const roadmapRect = roadmapRef.current.getBoundingClientRect();
-      const roadmapTop = roadmapRect.top;
-      const roadmapHeight = roadmapRect.height;
-      const viewportHeight = window.innerHeight;
-      const viewportCenter = viewportHeight / 2;
-
-      // Start progress calculation from the beginning of the roadmap section
-      // When roadmap just enters viewport, progress should be at first stage
-      const sectionTop = roadmapTop;
-      const sectionBottom = roadmapTop + roadmapHeight;
-
-      // Calculate progress: 0% when section top is at viewport bottom, 100% when section bottom is at viewport top
-      if (sectionTop > viewportCenter) {
-        // Haven't reached the section yet
-        return 0;
-      } else if (sectionBottom < viewportCenter) {
-        // Past the section
-        return 100;
-      } else {
-        // Calculate based on how far through the section we've scrolled
-        const scrolled = viewportCenter - sectionTop;
-        const total = roadmapHeight;
-        const progress = (scrolled / total) * 100;
-        return Math.max(0, Math.min(100, progress));
-      }
-    };
-
-    const smoothUpdate = () => {
-      targetProgress = calculateProgress();
-
-      // Smooth interpolation for ultra-smooth animation
-      const diff = targetProgress - currentProgress;
-      currentProgress += diff * 0.15; // Smoothing factor
-
-      setScrollProgress(currentProgress);
-      rafId = requestAnimationFrame(smoothUpdate);
-    };
-
-    const handleScroll = () => {
-      targetProgress = calculateProgress();
-    };
-
-    // Start the smooth animation loop
-    rafId = requestAnimationFrame(smoothUpdate);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Initial calculation
-    targetProgress = calculateProgress();
-    currentProgress = targetProgress;
-    setScrollProgress(currentProgress);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  // Intersection Observer for stage cards - very responsive
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '-45% 0px -45% 0px', // Tighter margins for center detection
-      threshold: [0, 0.5, 1],
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const stageId = Number(entry.target.getAttribute('data-stage-id'));
-          setExpandedStage(stageId);
-        }
-      });
-    }, options);
-
-    stageRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Intersection Observer for table visibility
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.1,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setShowTable(true);
-        }
-      });
-    }, options);
-
-    if (tableRef.current) {
-      observer.observe(tableRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <div className="bg-offwhite">
@@ -370,18 +190,9 @@ export const SourcingProcess: React.FC = memo(() => {
         </div>
       </section>
 
-      {/* Animated Roadmap */}
-      <section
-        ref={roadmapRef}
-        className="relative py-20 md:py-32"
-        aria-label="Sourcing process roadmap"
-      >
+      {/* Roadmap */}
+      <section className="py-20 md:py-32" aria-label="Sourcing process roadmap">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Progress Line - Desktop only */}
-          <div className="hidden md:block">
-            <ProgressLine progress={scrollProgress} />
-          </div>
-
           {/* Stage Cards - Zigzag Layout */}
           <div className="relative">
             {STAGES.map((stage, index) => {
@@ -389,19 +200,12 @@ export const SourcingProcess: React.FC = memo(() => {
               return (
                 <div
                   key={stage.id}
-                  ref={(el) => (stageRefs.current[index] = el)}
-                  data-stage-id={stage.id}
                   className={`
                     relative mb-12 md:mb-16
                     ${isLeft ? 'md:mr-[50%] md:pr-12' : 'md:ml-[50%] md:pl-12'}
                   `}
                 >
-                  <StageCard
-                    stage={stage}
-                    isExpanded={expandedStage === stage.id}
-                    isLast={index === STAGES.length - 1}
-                    side={isLeft ? 'left' : 'right'}
-                  />
+                  <StageCard stage={stage} />
                 </div>
               );
             })}
@@ -410,15 +214,7 @@ export const SourcingProcess: React.FC = memo(() => {
       </section>
 
       {/* Service Tiers Table */}
-      <section
-        ref={tableRef}
-        className={`
-          py-20 md:py-32 bg-white
-          transition-all duration-1000 ease-out
-          ${showTable ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-        `}
-        aria-label="Service tier comparison"
-      >
+      <section className="py-20 md:py-32 bg-white" aria-label="Service tier comparison">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
