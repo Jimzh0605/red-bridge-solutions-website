@@ -193,8 +193,24 @@ export const SourcingProcess: React.FC = memo(() => {
       {/* Roadmap */}
       <section className="py-20 md:py-32" aria-label="Sourcing process roadmap">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Stage Cards - Zigzag Layout */}
+          {/* Stage Cards - Zigzag Layout with Vertical Line */}
           <div className="relative">
+            {/* Vertical Line - Desktop only */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-primary -translate-x-1/2" aria-hidden="true">
+              {/* Dots on the line */}
+              {STAGES.map((stage, index) => (
+                <div
+                  key={`dot-${stage.id}`}
+                  className="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary rounded-full border-4 border-white shadow-lg"
+                  style={{
+                    top: `${(index / (STAGES.length - 1)) * 100}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  aria-hidden="true"
+                />
+              ))}
+            </div>
+
             {STAGES.map((stage, index) => {
               const isLeft = index % 2 === 0;
               return (
@@ -202,7 +218,7 @@ export const SourcingProcess: React.FC = memo(() => {
                   key={stage.id}
                   className={`
                     relative mb-12 md:mb-16
-                    ${isLeft ? 'md:mr-[50%] md:pr-12' : 'md:ml-[50%] md:pl-12'}
+                    ${isLeft ? 'md:mr-[50%] md:pr-16' : 'md:ml-[50%] md:pl-16'}
                   `}
                 >
                   <StageCard stage={stage} />
