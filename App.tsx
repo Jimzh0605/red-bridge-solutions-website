@@ -9,7 +9,6 @@ const About = React.lazy(() => import('./pages/About').then(module => ({ default
 const FAQ = React.lazy(() => import('./pages/FAQ').then(module => ({ default: module.FAQ })));
 const Portal = React.lazy(() => import('./pages/Portal').then(module => ({ default: module.Portal })));
 const Consultation = React.lazy(() => import('./pages/Consultation').then(module => ({ default: module.Consultation })));
-const CaseStudies = React.lazy(() => import('./pages/CaseStudies').then(module => ({ default: module.CaseStudies })));
 const SourcingProcess = React.lazy(() => import('./pages/SourcingProcess').then(module => ({ default: module.SourcingProcess })));
 
 // Loading fallback component
@@ -113,7 +112,6 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/case-studies" element={<CaseStudies />} />
                 <Route path="/sourcing-process" element={<SourcingProcess />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/portal" element={<Portal />} />
